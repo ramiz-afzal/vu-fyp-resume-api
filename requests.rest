@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/v1/auth/login
+
+
+{
+    "email":"bc190402684@vu.edu.pk",
+    "password":"bc190402684@vu.edu.pk"
+}
+
+GET http://localhost:8080/api/v1/users

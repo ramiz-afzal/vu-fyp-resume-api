@@ -1,0 +1,199 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int            @id @default(autoincrement())
+  email        String         @unique
+  password     String
+  resume       Resume[]
+  companies    Company[]
+  meta         UserMeta[]
+  roles        UserRole[]
+  employee     Employee?
+  refreshToken RefreshToken[]
+  resetToken   ResetToken[]
+  updatedAt    DateTime?      @updatedAt
+  createdAt    DateTime?      @default(now())
+}
+
+model UserMeta {
+  id        Int       @id @default(autoincrement())
+  key       String
+  value     String
+  userId    Int
+  user      User      @relation(fields: [userId], references: [id])
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Role {
+  id        Int        @id @default(autoincrement())
+  name      String
+  UserRole  UserRole[]
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+}
+
+model UserRole {
+  id        Int       @id @default(autoincrement())
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  role      Role      @relation(fields: [roleId], references: [id])
+  roleId    Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Resume {
+  id            Int             @id @default(autoincrement())
+  user          User            @relation(fields: [userId], references: [id])
+  userId        Int
+  meta          ResumeMeta[]
+  education     Education[]
+  experience    Experience[]
+  certification Certification[]
+  createdAt     DateTime?       @default(now())
+  updatedAt     DateTime?       @updatedAt
+}
+
+model ResumeMeta {
+  id        Int       @id @default(autoincrement())
+  key       String
+  value     String
+  resume    Resume    @relation(fields: [resumeId], references: [id])
+  resumeId  Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Education {
+  id          Int       @id @default(autoincrement())
+  inProcess   Boolean
+  institute   String
+  degree      String
+  startDate   DateTime
+  endDate     DateTime?
+  description String?
+  resume      Resume    @relation(fields: [resumeId], references: [id])
+  resumeId    Int
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Experience {
+  id            Int       @id @default(autoincrement())
+  stillEmployed Boolean
+  company       String
+  designation   String
+  startDate     DateTime
+  endDate       DateTime?
+  description   String?
+  resume        Resume    @relation(fields: [resumeId], references: [id])
+  resumeId      Int
+  createdAt     DateTime? @default(now())
+  updatedAt     DateTime? @updatedAt
+}
+
+model Certification {
+  id          Int       @id @default(autoincrement())
+  institute   String
+  title       String
+  description String?
+  Resume      Resume    @relation(fields: [resumeId], references: [id])
+  resumeId    Int
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Company {
+  id          Int          @id @default(autoincrement())
+  user        User         @relation(fields: [userId], references: [id])
+  userId      Int
+  description String?
+  title       String
+  departments Department[]
+  services    Service[]
+  createdAt   DateTime?    @default(now())
+  updatedAt   DateTime?    @updatedAt
+}
+
+model Department {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String?
+  employee    Employee[]
+  comapany    Company    @relation(fields: [companyId], references: [id])
+  companyId   Int
+  createdAt   DateTime?  @default(now())
+  updatedAt   DateTime?  @updatedAt
+}
+
+model Service {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  comapany    Company   @relation(fields: [companyId], references: [id])
+  companyId   Int
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Employee {
+  id                   Int                 @id @default(autoincrement())
+  type                 String
+  department           Department          @relation(fields: [departmentId], references: [id])
+  departmentId         Int
+  user                 User?               @relation(fields: [userId], references: [id])
+  userId               Int?                @unique
+  illiterateEmployee   IlliterateEmployee? @relation(fields: [illiterateEmployeeId], references: [id])
+  illiterateEmployeeId Int?                @unique
+  createdAt            DateTime?           @default(now())
+  updatedAt            DateTime?           @updatedAt
+}
+
+model IlliterateEmployee {
+  id          Int       @id @default(autoincrement())
+  firstName   String
+  lastName    String
+  designation String
+  startDate   DateTime
+  endDate     DateTime?
+  employee    Employee?
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model RefreshToken {
+  id        Int       @id @default(autoincrement())
+  token     String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model ResetToken {
+  id        Int       @id @default(autoincrement())
+  token     String    @unique
+  user      User      @relation(fields: [userId], references: [id])
+  userId    Int
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model File {
+  id        Int       @id @default(autoincrement())
+  path      String
+  name      String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}

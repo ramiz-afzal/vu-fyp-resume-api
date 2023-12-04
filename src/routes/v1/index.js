@@ -1,0 +1,15 @@
+import express from 'express';
+import authRoutes from './authRoutes.js';
+import userRoutes from './usersRoutes.js';
+import passwordRoutes from './passwordRoutes.js';
+import resumeRoutes from './resumeRoutes.js';
+import companyRoutes from './companiesRoutes.js';
+import illiterateEmployeeRoutes from './illiterateEmployeeRoutes.js';
+const router = express.Router();
+router.use('/auth', authRoutes);
+router.use('/password', passwordRoutes);
+router.use('/users', userRoutes);
+router.use('/resume', resumeRoutes);
+router.use('/company', companyRoutes);
+router.use('/illiterate-employee', illiterateEmployeeRoutes);
+export default router;
