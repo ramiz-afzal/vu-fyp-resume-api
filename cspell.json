@@ -3,7 +3,10 @@
 	"ignorePaths": [],
 	"dictionaryDefinitions": [],
 	"dictionaries": [],
-	"words": ["Afzal"],
+	"words": [
+		"Afzal",
+		"uuidv4"
+	],
 	"ignoreWords": [],
 	"import": []
 }

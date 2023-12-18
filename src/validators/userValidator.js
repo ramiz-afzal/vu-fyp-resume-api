@@ -7,8 +7,7 @@ const userValidator = {
 		body('lastName', 'Field is required').not().isEmpty(),
 		body('gender', 'Field is required').not().isEmpty(),
 		body('dob', 'Field is required').not().isEmpty(),
-		body('accountType', 'Field is required').not().isEmpty(),
-		body('email', 'Invalid email').isEmail(),
+		body('accountType').not().isEmpty().withMessage('Field is required').isIn(['basic', 'professional']).withMessage(`accountType should be a value between 'basic', 'professional'`),
 		body('password', 'The minimum password length is 6 characters').isLength({ min: 6 }),
 		body('confirmPassword')
 			.exists({ checkFalsy: true })

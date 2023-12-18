@@ -5,6 +5,21 @@ const controller = {
 		const companies = await companyModel.getEntries();
 		res.status(200).send({ companies: companies });
 	},
+	getSearchResults: async (req, res) => {
+		const query = req.params?.query;
+		if (!query) {
+			return res.status(400).json({
+				errors: [
+					{
+						type: 'missingParam',
+						msg: 'No Search query provided',
+					},
+				],
+			});
+		}
+		const companies = await companyModel.getSearchResults(query);
+		res.status(200).send({ companies: companies });
+	},
 	getEntry: async (req, res) => {
 		const companyId = req.params?.companyId;
 		if (!companyId) {

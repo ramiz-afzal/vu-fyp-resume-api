@@ -15,6 +15,37 @@ const model = {
 		});
 		return resumes;
 	},
+	getSearchResults: async (query) => {
+		if (!query) {
+			return false;
+		}
+		const companies = await prisma.company.findMany({
+			where: {
+				OR: [
+					{
+						title: {
+							contains: query,
+						},
+					},
+					{
+						description: {
+							contains: query,
+						},
+					},
+				],
+			},
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				services: true,
+				departments: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+		return companies;
+	},
 	getEntry: async (companyId) => {
 		companyId = parseInt(companyId);
 		if (!companyId) {
@@ -24,6 +55,57 @@ const model = {
 		const company = await prisma.company.findUnique({
 			where: {
 				id: companyId,
+			},
+			select: {
+				id: true,
+				title: true,
+				description: true,
+				services: true,
+				departments: {
+					select: {
+						id: true,
+						title: true,
+						description: true,
+						employee: {
+							select: {
+								id: true,
+								type: true,
+								user: {
+									select: {
+										id: true,
+										email: true,
+										meta: true,
+									},
+								},
+								illiterateEmployee: true,
+								createdAt: true,
+								updatedAt: true,
+							},
+						},
+						createdAt: true,
+						updatedAt: true,
+					},
+				},
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+
+		if (!company) {
+			return false;
+		}
+
+		return company;
+	},
+	getUserCompany: async (userId) => {
+		userId = parseInt(userId);
+		if (!userId) {
+			return false;
+		}
+
+		const company = await prisma.company.findMany({
+			where: {
+				userId: userId,
 			},
 			select: {
 				id: true,

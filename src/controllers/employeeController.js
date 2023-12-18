@@ -154,9 +154,11 @@ const controller = {
 		}
 
 		let data = {};
-		data.departmentId = departmentId;
 		data.type = 'type' in req.body.body ? req.body.body.type : null;
 		data.userId = 'userId' in req.body.body ? req.body.body.userId : null;
+		data.departmentId = departmentId;
+		data.employmentType = 'employmentType' in req.body.body ? req.body.body.employmentType : null;
+		data.employmentPosition = 'employmentPosition' in req.body.body ? req.body.body.employmentPosition : null;
 		data.illiterateEmployeeId = 'illiterateEmployeeId' in req.body.body ? req.body.body.illiterateEmployeeId : null;
 
 		const updatedEmployee = await employeeModel.updateEntry(employeeId, data);

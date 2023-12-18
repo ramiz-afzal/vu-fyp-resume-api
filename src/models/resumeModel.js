@@ -16,6 +16,37 @@ const model = {
 		});
 		return resumes;
 	},
+	getSearchResults: async (query) => {
+		if (!query) {
+			return false;
+		}
+		const resumes = await prisma.resume.findMany({
+			where: {
+				OR: [
+					{
+						meta: {
+							some: {
+								value: {
+									contains: query,
+								},
+							},
+						},
+					},
+				],
+			},
+			select: {
+				id: true,
+				user: true,
+				meta: true,
+				education: true,
+				experience: true,
+				certification: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+		return resumes;
+	},
 	getEntry: async (resumeId) => {
 		resumeId = parseInt(resumeId);
 		if (!resumeId) {
@@ -25,6 +56,34 @@ const model = {
 		const resume = await prisma.resume.findUnique({
 			where: {
 				id: resumeId,
+			},
+			select: {
+				id: true,
+				user: true,
+				meta: true,
+				education: true,
+				experience: true,
+				certification: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		});
+
+		if (!resume) {
+			return false;
+		}
+
+		return resume;
+	},
+	getUserResume: async (userId) => {
+		userId = parseInt(userId);
+		if (!userId) {
+			return false;
+		}
+
+		const resume = await prisma.resume.findMany({
+			where: {
+				userId: userId,
 			},
 			select: {
 				id: true,

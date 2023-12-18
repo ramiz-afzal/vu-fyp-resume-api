@@ -4,6 +4,8 @@ const model = {
 	selectFields: {
 		id: true,
 		type: true,
+		employmentType: true,
+		employmentPosition: true,
 		user: {
 			select: {
 				id: true,
@@ -60,6 +62,12 @@ const model = {
 		let createBody = {};
 		if ('type' in data && data.type !== null) {
 			createBody.type = data.type;
+		}
+		if ('employmentType' in data && data.employmentType !== null) {
+			createBody.employmentType = data.employmentType;
+		}
+		if ('employmentPosition' in data && data.employmentPosition !== null) {
+			createBody.employmentPosition = data.employmentPosition;
 		}
 		if ('userId' in data && data.userId !== null) {
 			createBody.userId = parseInt(data.userId);

@@ -1,4 +1,6 @@
 import userModel from '../models/userModel.js';
+import resumeModel from '../models/resumeModel.js';
+import companyModel from '../models/companyModel.js';
 import { validationResult } from 'express-validator';
 const controller = {
 	getEntries: async (req, res) => {
@@ -35,6 +37,60 @@ const controller = {
 		}
 
 		return res.status(200).send({ user: user });
+	},
+	getResume: async (req, res) => {
+		const userId = req.params?.id;
+		if (!userId) {
+			return res.status(400).json({
+				errors: [
+					{
+						type: 'missingParam',
+						msg: 'User ID is required',
+					},
+				],
+			});
+		}
+
+		const resume = await resumeModel.getUserResume(userId);
+		if (!resume) {
+			return res.status(404).json({
+				errors: [
+					{
+						type: 'notFound',
+						msg: 'Resource does not exists',
+					},
+				],
+			});
+		}
+
+		return res.status(200).send({ resume: resume });
+	},
+	getCompany: async (req, res) => {
+		const userId = req.params?.id;
+		if (!userId) {
+			return res.status(400).json({
+				errors: [
+					{
+						type: 'missingParam',
+						msg: 'User ID is required',
+					},
+				],
+			});
+		}
+
+		const company = await companyModel.getUserCompany(userId);
+		if (!company) {
+			return res.status(404).json({
+				errors: [
+					{
+						type: 'notFound',
+						msg: 'Resource does not exists',
+					},
+				],
+			});
+		}
+
+		return res.status(200).send({ company: company });
 	},
 	createEntry: async (req, res) => {
 		try {

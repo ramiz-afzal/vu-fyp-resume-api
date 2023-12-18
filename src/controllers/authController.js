@@ -37,6 +37,7 @@ const controller = {
 			return res.status(200).send({
 				accessToken: accessToken,
 				refreshToken: refreshToken,
+				user: user,
 			});
 		} catch (error) {
 			return res.status(500).send({ message: 'Something went wrong' });

@@ -5,6 +5,21 @@ const controller = {
 		const resumes = await resumeModel.getEntries();
 		res.status(200).send({ resumes: resumes });
 	},
+	getSearchResults: async (req, res) => {
+		const query = req.params?.query;
+		if (!query) {
+			return res.status(400).json({
+				errors: [
+					{
+						type: 'missingParam',
+						msg: 'No Search query provided',
+					},
+				],
+			});
+		}
+		const resumes = await resumeModel.getSearchResults(query);
+		res.status(200).send({ resumes: resumes });
+	},
 	getEntry: async (req, res) => {
 		const resumeId = req.params?.resumeId;
 		if (!resumeId) {

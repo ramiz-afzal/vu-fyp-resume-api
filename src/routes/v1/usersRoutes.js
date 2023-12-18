@@ -7,6 +7,8 @@ import userValidator from '../../validators/userValidator.js';
 const router = express.Router({ mergeParams: true });
 router.get('/', authMiddleware, controller.getEntries);
 router.get('/:id', authMiddleware, controller.getEntry);
+router.get('/:id/resume', authMiddleware, controller.getResume);
+router.get('/:id/company', authMiddleware, controller.getCompany);
 router.post('/', userValidator.create, controller.createEntry);
 router.patch('/:id', [authMiddleware, userValidator.update], controller.updateEntry);
 router.delete('/:id', [authMiddleware, adminRoleMiddleware], controller.deleteEntry);
