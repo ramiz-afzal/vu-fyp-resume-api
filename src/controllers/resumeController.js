@@ -119,6 +119,7 @@ const controller = {
 		data.city = updateBody.city || null;
 		data.state = updateBody.state || null;
 		data.country = updateBody.country || null;
+		data.imageId = updateBody.imageId || null;
 
 		const updatedResume = await resumeModel.updateEntry(resumeId, data);
 		if (!updatedResume) {

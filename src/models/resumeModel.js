@@ -174,6 +174,11 @@ const model = {
 			return false;
 		}
 
+		let updateObject = {};
+		if (data.imageId) {
+			updateObject.imageId = data.imageId;
+		}
+
 		let resumeMeta = [];
 		if (data.firstName) {
 			resumeMeta.push({ key: 'first_name', value: data.firstName });
@@ -221,21 +226,21 @@ const model = {
 			resumeMeta.push({ key: 'country', value: data.country });
 		}
 
+		updateObject.meta = {
+			deleteMany: {
+				OR: resumeMeta.map((metaItem) => ({ key: metaItem.key })),
+			},
+			createMany: {
+				data: resumeMeta.map((metaItem) => ({
+					key: metaItem.key,
+					value: metaItem.value ? metaItem.value : '',
+				})),
+			},
+		};
+
 		const updatedResume = await prisma.resume.update({
 			where: { id: resumeId },
-			data: {
-				meta: {
-					deleteMany: {
-						OR: resumeMeta.map((metaItem) => ({ key: metaItem.key })),
-					},
-					createMany: {
-						data: resumeMeta.map((metaItem) => ({
-							key: metaItem.key,
-							value: metaItem.value ? metaItem.value : '',
-						})),
-					},
-				},
-			},
+			data: updateObject,
 			select: {
 				...model.selectFields,
 			},
