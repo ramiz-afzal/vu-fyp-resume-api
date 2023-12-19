@@ -95,7 +95,8 @@ model Experience {
   id            Int       @id @default(autoincrement())
   stillEmployed Boolean
   isVerified    Boolean   @default(false)
-  company       String
+  company       Company?  @relation(fields: [companyId], references: [id])
+  companyId     Int?
   designation   String
   startDate     DateTime
   endDate       DateTime?
@@ -130,6 +131,7 @@ model Company {
   services    Service[]
   createdAt   DateTime?    @default(now())
   updatedAt   DateTime?    @updatedAt
+  Experience  Experience[]
 }
 
 model Department {

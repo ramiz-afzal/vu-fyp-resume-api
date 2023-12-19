@@ -1,17 +1,34 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const model = {
+	selectFields: {
+		id: true,
+		user: true,
+		image: true,
+		meta: true,
+		education: true,
+		experience: {
+			select: {
+				id: true,
+				isVerified: true,
+				stillEmployed: true,
+				company: true,
+				designation: true,
+				startDate: true,
+				endDate: true,
+				description: true,
+				createdAt: true,
+				updatedAt: true,
+			},
+		},
+		certification: true,
+		createdAt: true,
+		updatedAt: true,
+	},
 	getEntries: async () => {
 		const resumes = await prisma.resume.findMany({
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 		return resumes;
@@ -35,14 +52,7 @@ const model = {
 				],
 			},
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 		return resumes;
@@ -58,14 +68,7 @@ const model = {
 				id: resumeId,
 			},
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 
@@ -86,14 +89,7 @@ const model = {
 				userId: userId,
 			},
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 
@@ -114,6 +110,9 @@ const model = {
 		}
 		if (data.lastName) {
 			resumeMeta.push({ key: 'last_name', value: data.lastName });
+		}
+		if (data.biography) {
+			resumeMeta.push({ key: 'biography', value: data.biography });
 		}
 		if (data.gender) {
 			resumeMeta.push({ key: 'gender', value: data.gender });
@@ -154,14 +153,7 @@ const model = {
 				},
 			},
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 
@@ -188,6 +180,12 @@ const model = {
 		}
 		if (data.lastName) {
 			resumeMeta.push({ key: 'last_name', value: data.lastName });
+		}
+		if (data.biography) {
+			resumeMeta.push({ key: 'biography', value: data.biography });
+		}
+		if (data.designation) {
+			resumeMeta.push({ key: 'designation', value: data.designation });
 		}
 		if (data.gender) {
 			resumeMeta.push({ key: 'gender', value: data.gender });
@@ -239,14 +237,7 @@ const model = {
 				},
 			},
 			select: {
-				id: true,
-				user: true,
-				meta: true,
-				education: true,
-				experience: true,
-				certification: true,
-				createdAt: true,
-				updatedAt: true,
+				...model.selectFields,
 			},
 		});
 

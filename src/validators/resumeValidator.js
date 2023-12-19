@@ -3,6 +3,7 @@ const resumeValidator = {
 	create: [
 		body('firstName', 'Field is required').not().isEmpty(),
 		body('lastName', 'Field is required').not().isEmpty(),
+		body('biography', 'Field is required').not().isEmpty(),
 		body('designation', 'Field is required').not().isEmpty(),
 		body('phone', 'Field is required').not().isEmpty(),
 		body('gender', 'Field is required').not().isEmpty(),

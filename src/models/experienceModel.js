@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const model = {
+	selectFields: { id: true, isVerified: true, stillEmployed: true, company: true, designation: true, startDate: true, endDate: true, description: true, createdAt: true, updatedAt: true },
 	getEntries: async (resumeId) => {
 		if (!resumeId) {
 			return false;
@@ -11,17 +12,7 @@ const model = {
 			where: {
 				resumeId: resumeId,
 			},
-			select: {
-				id: true,
-				stillEmployed: true,
-				company: true,
-				designation: true,
-				startDate: true,
-				endDate: true,
-				description: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 		return experience;
 	},
@@ -38,17 +29,7 @@ const model = {
 				id: experienceId,
 				resumeId: resumeId,
 			},
-			select: {
-				id: true,
-				stillEmployed: true,
-				company: true,
-				designation: true,
-				startDate: true,
-				endDate: true,
-				description: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 
 		if (!resume) {
@@ -67,8 +48,8 @@ const model = {
 		if ('stillEmployed' in data && data.stillEmployed !== null) {
 			createBody.stillEmployed = data.stillEmployed;
 		}
-		if ('company' in data && data.company !== null) {
-			createBody.company = data.company;
+		if ('companyId' in data && data.companyId !== null) {
+			createBody.companyId = parseInt(data.companyId);
 		}
 		if ('designation' in data && data.designation !== null) {
 			createBody.designation = data.designation;
@@ -90,17 +71,7 @@ const model = {
 				resumeId: resumeId,
 				...createBody,
 			},
-			select: {
-				id: true,
-				stillEmployed: true,
-				company: true,
-				designation: true,
-				startDate: true,
-				endDate: true,
-				description: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 
 		if (!experience) {
@@ -125,8 +96,8 @@ const model = {
 		if ('stillEmployed' in data && data.stillEmployed !== null) {
 			updateData.stillEmployed = data.stillEmployed;
 		}
-		if ('company' in data && data.company !== null) {
-			updateData.company = data.company;
+		if ('companyId' in data && data.companyId !== null) {
+			updateData.companyId = parseInt(data.companyId);
 		}
 		if ('designation' in data && data.designation !== null) {
 			updateData.designation = data.designation;
@@ -148,17 +119,7 @@ const model = {
 			data: {
 				...updateData,
 			},
-			select: {
-				id: true,
-				stillEmployed: true,
-				company: true,
-				designation: true,
-				startDate: true,
-				endDate: true,
-				description: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 
 		if (!updatedExperience) {
