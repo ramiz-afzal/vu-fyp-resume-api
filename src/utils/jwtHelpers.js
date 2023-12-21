@@ -50,12 +50,16 @@ export default {
 			throw new Error('No token provided');
 		}
 
-		let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
-		if (decoded) {
-			verified = decoded;
+		try {
+			let decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+			if (decoded) {
+				verified = decoded;
+			}
+		} catch (error) {
+			throw error;
+		} finally {
+			return verified;
 		}
-
-		return verified;
 	},
 	validateRefreshJWT: async (token) => {
 		let verified = false;

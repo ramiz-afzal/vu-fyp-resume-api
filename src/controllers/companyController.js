@@ -97,6 +97,7 @@ const controller = {
 		data.userId = req.user.id;
 		data.title = 'title' in updateBody ? updateBody.title : null;
 		data.description = 'description' in updateBody ? updateBody.description : null;
+		data.imageId = updateBody.imageId || null;
 
 		const updatedResume = await companyModel.updateEntry(companyId, data);
 		if (!updatedResume) {

@@ -1,17 +1,19 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const model = {
+	selectFields: {
+		id: true,
+		image: true,
+		title: true,
+		description: true,
+		services: true,
+		departments: true,
+		createdAt: true,
+		updatedAt: true,
+	},
 	getEntries: async () => {
 		const resumes = await prisma.company.findMany({
-			select: {
-				id: true,
-				title: true,
-				description: true,
-				services: true,
-				departments: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 		return resumes;
 	},
@@ -34,15 +36,7 @@ const model = {
 					},
 				],
 			},
-			select: {
-				id: true,
-				title: true,
-				description: true,
-				services: true,
-				departments: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 		return companies;
 	},
@@ -58,6 +52,7 @@ const model = {
 			},
 			select: {
 				id: true,
+				image: true,
 				title: true,
 				description: true,
 				services: true,
@@ -109,6 +104,7 @@ const model = {
 			},
 			select: {
 				id: true,
+				image: true,
 				title: true,
 				description: true,
 				services: true,
@@ -166,15 +162,7 @@ const model = {
 				userId: data.userId,
 				...createBody,
 			},
-			select: {
-				id: true,
-				title: true,
-				description: true,
-				services: true,
-				departments: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 
 		if (!company) {
@@ -201,21 +189,16 @@ const model = {
 		if ('description' in data && data.description !== null) {
 			updateData.description = data.description;
 		}
+		if ('imageId' in data && data.imageId !== null) {
+			updateData.imageId = data.imageId;
+		}
 
 		const updatedCompany = await prisma.company.update({
 			where: { id: companyId },
 			data: {
 				...updateData,
 			},
-			select: {
-				id: true,
-				title: true,
-				description: true,
-				services: true,
-				departments: true,
-				createdAt: true,
-				updatedAt: true,
-			},
+			select: { ...model.selectFields },
 		});
 
 		if (!updatedCompany) {
