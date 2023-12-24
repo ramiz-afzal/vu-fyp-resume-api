@@ -1,5 +1,5 @@
 import employeeModel from '../models/employeeModel.js';
-import userModel from '../models/userModel.js';
+import resumeModel from '../models/resumeModel.js';
 import illiterateEmployeeModel from '../models/illiterateEmployeeModel.js';
 import { validationResult } from 'express-validator';
 const controller = {
@@ -65,17 +65,19 @@ const controller = {
 		let data = {};
 		data.departmentId = req.params.departmentId || null;
 		data.type = 'type' in req.body ? req.body.type : null;
-		data.userId = 'userId' in req.body ? req.body.userId : null;
+		data.resumeId = 'resumeId' in req.body ? req.body.resumeId : null;
+		data.employmentType = 'employmentType' in req.body ? req.body.employmentType : null;
+		data.employmentPosition = 'employmentPosition' in req.body ? req.body.employmentPosition : null;
 		data.illiterateEmployeeId = 'illiterateEmployeeId' in req.body ? req.body.illiterateEmployeeId : null;
 
-		if (data.type == 'educated' && data.userId !== null) {
-			const user = await userModel.getEntryBy(data.userId);
-			if (!user) {
+		if (data.type == 'educated' && data.resumeId !== null) {
+			const resume = await resumeModel.getEntry(data.resumeId);
+			if (!resume) {
 				return res.status(400).json({
 					errors: [
 						{
 							type: 'doestNotExists',
-							msg: 'resource user does not exists against the provided userId',
+							msg: 'resource resume does not exists against the provided resumeId',
 						},
 					],
 				});
@@ -155,7 +157,7 @@ const controller = {
 
 		let data = {};
 		data.type = 'type' in req.body.body ? req.body.body.type : null;
-		data.userId = 'userId' in req.body.body ? req.body.body.userId : null;
+		data.resumeId = 'resumeId' in req.body.body ? req.body.body.resumeId : null;
 		data.departmentId = departmentId;
 		data.employmentType = 'employmentType' in req.body.body ? req.body.body.employmentType : null;
 		data.employmentPosition = 'employmentPosition' in req.body.body ? req.body.body.employmentPosition : null;

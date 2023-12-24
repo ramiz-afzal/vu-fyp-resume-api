@@ -65,13 +65,7 @@ const model = {
 							select: {
 								id: true,
 								type: true,
-								user: {
-									select: {
-										id: true,
-										email: true,
-										meta: true,
-									},
-								},
+								resume: true,
 								illiterateEmployee: true,
 								createdAt: true,
 								updatedAt: true,
@@ -117,13 +111,7 @@ const model = {
 							select: {
 								id: true,
 								type: true,
-								user: {
-									select: {
-										id: true,
-										email: true,
-										meta: true,
-									},
-								},
+								resume: true,
 								illiterateEmployee: true,
 								createdAt: true,
 								updatedAt: true,

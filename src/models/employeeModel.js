@@ -6,14 +6,34 @@ const model = {
 		type: true,
 		employmentType: true,
 		employmentPosition: true,
-		user: {
+		resume: {
 			select: {
 				id: true,
-				email: true,
+				user: true,
+				image: true,
 				meta: true,
+				education: true,
+				experience: {
+					select: {
+						id: true,
+						isVerified: true,
+						stillEmployed: true,
+						company: true,
+						designation: true,
+						startDate: true,
+						endDate: true,
+						description: true,
+						createdAt: true,
+						updatedAt: true,
+					},
+				},
+				certification: true,
+				createdAt: true,
+				updatedAt: true,
 			},
 		},
 		illiterateEmployee: true,
+		department: true,
 		createdAt: true,
 		updatedAt: true,
 	},
@@ -69,8 +89,8 @@ const model = {
 		if ('employmentPosition' in data && data.employmentPosition !== null) {
 			createBody.employmentPosition = data.employmentPosition;
 		}
-		if ('userId' in data && data.userId !== null) {
-			createBody.userId = parseInt(data.userId);
+		if ('resumeId' in data && data.resumeId !== null) {
+			createBody.resumeId = parseInt(data.resumeId);
 		}
 		if ('illiterateEmployeeId' in data && data.illiterateEmployeeId !== null) {
 			createBody.illiterateEmployeeId = parseInt(data.illiterateEmployeeId);
@@ -106,8 +126,14 @@ const model = {
 		if ('type' in data && data.type !== null) {
 			updateData.type = data.type;
 		}
-		if ('userId' in data && data.userId !== null) {
-			updateData.userId = data.userId;
+		if ('resumeId' in data && data.resumeId !== null) {
+			updateData.resumeId = data.resumeId;
+		}
+		if ('employmentType' in data && data.employmentType !== null) {
+			updateData.employmentType = data.employmentType;
+		}
+		if ('employmentPosition' in data && data.employmentPosition !== null) {
+			updateData.employmentPosition = data.employmentPosition;
 		}
 		if ('illiterateEmployeeId' in data && data.illiterateEmployeeId !== null) {
 			updateData.illiterateEmployeeId = data.illiterateEmployeeId;
@@ -160,8 +186,8 @@ const model = {
 		if ('type' in data && data.type !== null) {
 			createBody.type = data.type;
 		}
-		if ('userId' in data && data.userId !== null) {
-			createBody.userId = parseInt(data.userId);
+		if ('resumeId' in data && data.resumeId !== null) {
+			createBody.resumeId = parseInt(data.resumeId);
 		}
 		if ('illiterateEmployeeId' in data && data.illiterateEmployeeId !== null) {
 			createBody.illiterateEmployeeId = parseInt(data.illiterateEmployeeId);
@@ -169,7 +195,7 @@ const model = {
 
 		let searchQuery = {};
 		if (createBody.type == 'educated') {
-			searchQuery = { userId: createBody.userId };
+			searchQuery = { resumeId: createBody.resumeId };
 		} else if (createBody.type == 'illiterate') {
 			searchQuery = { illiterateEmployeeId: createBody.illiterateEmployeeId };
 		}
