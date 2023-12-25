@@ -3,6 +3,7 @@ import companyController from '../../controllers/companyController.js';
 import departmentController from '../../controllers/departmentController.js';
 import employeeController from '../../controllers/employeeController.js';
 import serviceController from '../../controllers/serviceController.js';
+import experienceVerificationController from '../../controllers/experienceVerificationController.js';
 import authMiddleware from '../../middleware/authMiddleware.js';
 import companyValidator from '../../validators/companyValidator.js';
 import departmentValidator from '../../validators/departmentValidator.js';
@@ -35,7 +36,11 @@ router.delete('/:companyId/department/:departmentId/employee/:employeeId', [auth
 router.get('/:companyId/service', serviceController.getEntries);
 router.get('/:companyId/service/:serviceId', serviceController.getEntry);
 router.post('/:companyId/service/', [authMiddleware, serviceValidator.create], serviceController.createEntry);
-router.patch('/:companyId/service/:serviceId', [authMiddleware, serviceValidator.update], serviceController.updateEntry);
 router.delete('/:companyId/service/:serviceId', [authMiddleware], serviceController.deleteEntry);
+
+// company's experience verification
+router.get('/:companyId/experience-verification', [authMiddleware], experienceVerificationController.getEntries);
+router.get('/:companyId/experience-verification/:experienceVerificationId', [authMiddleware], experienceVerificationController.getEntry);
+router.post('/:companyId/experience-verification/:experienceVerificationId', [authMiddleware], experienceVerificationController.updateEntry);
 
 export default router;
