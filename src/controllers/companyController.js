@@ -2,7 +2,7 @@ import companyModel from '../models/companyModel.js';
 import { validationResult } from 'express-validator';
 const controller = {
 	getEntries: async (req, res) => {
-		const companies = await companyModel.getEntries();
+		const companies = await companyModel.getEntries(req.query);
 		res.status(200).send({ companies: companies });
 	},
 	getSearchResults: async (req, res) => {
@@ -97,6 +97,7 @@ const controller = {
 		data.userId = req.user.id;
 		data.title = 'title' in updateBody ? updateBody.title : null;
 		data.description = 'description' in updateBody ? updateBody.description : null;
+		data.isVerified = 'isVerified' in updateBody ? updateBody.isVerified : null;
 		data.imageId = updateBody.imageId || null;
 
 		const updatedResume = await companyModel.updateEntry(companyId, data);

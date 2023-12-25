@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const model = {
 	selectFields: {
 		id: true,
+		isVerified: true,
 		image: true,
 		title: true,
 		description: true,
@@ -11,11 +12,18 @@ const model = {
 		createdAt: true,
 		updatedAt: true,
 	},
-	getEntries: async () => {
-		const resumes = await prisma.company.findMany({
+	getEntries: async (query = null) => {
+		let whereClause = {};
+		if ('isVerified' in query && query.isVerified !== null) {
+			whereClause.isVerified = query.isVerified.toLowerCase() === 'true';
+		}
+		const companies = await prisma.company.findMany({
+			where: {
+				...whereClause,
+			},
 			select: { ...model.selectFields },
 		});
-		return resumes;
+		return companies;
 	},
 	getSearchResults: async (query) => {
 		if (!query) {
@@ -52,6 +60,7 @@ const model = {
 			},
 			select: {
 				id: true,
+				isVerified: true,
 				image: true,
 				title: true,
 				description: true,
@@ -98,6 +107,7 @@ const model = {
 			},
 			select: {
 				id: true,
+				isVerified: true,
 				image: true,
 				title: true,
 				description: true,
@@ -179,6 +189,9 @@ const model = {
 		}
 		if ('imageId' in data && data.imageId !== null) {
 			updateData.imageId = data.imageId;
+		}
+		if ('isVerified' in data && data.isVerified !== null) {
+			updateData.isVerified = data.isVerified.toLowerCase() === 'true';
 		}
 
 		const updatedCompany = await prisma.company.update({
