@@ -111,6 +111,9 @@ const model = {
 		if (data.lastName) {
 			resumeMeta.push({ key: 'last_name', value: data.lastName });
 		}
+		if (data.designation) {
+			resumeMeta.push({ key: 'designation', value: data.designation });
+		}
 		if (data.biography) {
 			resumeMeta.push({ key: 'biography', value: data.biography });
 		}

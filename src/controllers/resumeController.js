@@ -57,6 +57,7 @@ const controller = {
 		data.userId = req.user.id;
 		data.firstName = req.body.firstName || null;
 		data.lastName = req.body.lastName || null;
+		data.designation = updateBody.designation || null;
 		data.biography = req.body.biography || null;
 		data.gender = req.body.gender || null;
 		data.dob = req.body.dob || null;
